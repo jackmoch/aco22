@@ -3,20 +3,18 @@
 
 (def sample "A Y\nB X\nC Z")
 (def day2-input (slurp "./src/day2-input.txt"))
-(def char->value-mapping {\A 1 \B 2 \C 3 \X 1 \Y 2 \Z 3})
 (def mapper
-  {1 {1 {1 4 2 8 3 3}
-      2 {1 1 2 5 3 9}
-      3 {1 7 2 2 3 6}}
-   2 {1 {1 3 2 4 3 8}
-      2 {1 1 2 5 3 9}
-      3 {1 2 2 6 3 7}}})
+  {1 {\A {\X 4 \Y 8 \Z 3}
+      \B {\X 1 \Y 5 \Z 9}
+      \C {\X 7 \Y 2 \Z 6}}
+   2 {\A {\X 3 \Y 4 \Z 8}
+      \B {\X 1 \Y 5 \Z 9}
+      \C {\X 2 \Y 6 \Z 7}}})
 
 (defn determine-total-score
   [input-data part]
   (transduce
-    (comp (map (partial replace char->value-mapping))
-          (map (juxt first last))
+    (comp (map (juxt first last))
           (map (partial cons part))
           (map (partial get-in mapper)))
     +
