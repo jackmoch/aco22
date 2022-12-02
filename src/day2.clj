@@ -18,8 +18,8 @@
   (transduce
     (comp (map (partial replace char->value-mapping))
           (map (partial remove nil?))
-          (map #(get (get mapper (first %)) (second %))))
-    (partial +)
+          (map (partial get-in mapper)))
+    +
     (str/split-lines input-data)))
 
 (defn part1 [] (determine-total-score day2-input pt1-decision-mappings))
