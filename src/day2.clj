@@ -3,7 +3,7 @@
 
 (def sample "A Y\nB X\nC Z")
 (def day2-input (slurp "./src/day2-input.txt"))
-(def char->value-mapping {\A 1 \B 2 \C 3 \X 1 \Y 2 \Z 3 \space nil})
+(def char->value-mapping {\A 1 \B 2 \C 3 \X 1 \Y 2 \Z 3})
 (def pt1-decision-mappings
   {1 {1 4 2 8 3 3}
    2 {1 1 2 5 3 9}
@@ -17,7 +17,7 @@
   [input-data mapper]
   (transduce
     (comp (map (partial replace char->value-mapping))
-          (map (partial remove nil?))
+          (map (juxt first last))
           (map (partial get-in mapper)))
     +
     (str/split-lines input-data)))
