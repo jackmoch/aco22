@@ -14,16 +14,14 @@
         (str/split s #",")))
 
 (defn find-overlaps [set-logic]
-  (transduce
-    (comp (map #(str/split % #","))
-          (map (partial mapcat str->ints))
-          (map (partial sort-by count))
-          set-logic)
-    (fn count-total
-      ([] [])
-      ([result] (count result))
-      ([result input] (conj result input)))
-    (-> day4-input str/split-lines)))
+  (count
+    (transduce
+      (comp (map #(str/split % #","))
+            (map #(mapcat str->ints %))
+            (map #(sort-by count %))
+            set-logic)
+      conj
+      (-> day4-input str/split-lines))))
 
 (defn part1 [] (find-overlaps (comp (map (partial apply set/difference))
                                     (filter empty?))))
